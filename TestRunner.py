@@ -5,11 +5,11 @@ from random import randint
 import pandas as pd
 def testrunner():
     f = open('hornex.txt', 'w')
-    varCount = randint(1, 10)
-    conCount = randint(1, 10)
+    varCount = 10
+    conCount = 10
     headerGen(varCount, conCount, f)
-    for i in range(randint(1, 10)):
-        constraintGen(varCount, conCount, f)
+    for i in range(10):
+        constraintGen(varCount, f)
     f.close()
 
     subprocess.run(['clang', '-o', 'lift', 'lift.c'])
@@ -80,6 +80,7 @@ print("feasible min:")
 
 print(feasibleMin.to_string())
 
+print("\n")
 
 print("infeasible average:")
 

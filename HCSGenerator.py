@@ -4,10 +4,10 @@ from random import shuffle
 
 
 def headerGen(varCount, conCount, f):
-    f.write(str(varCount) + " \n")
+    f.write(str(varCount) + "\n")
     f.write(str(conCount) + "\n")
 
-def constraintGen(varCount, conCount, f):
+def constraintGen(varCount, f):
     width = randint(1, varCount)
     con = [var for var in range(1, varCount + 1)]
     shuffle(con)
@@ -29,5 +29,5 @@ def constraintGen(varCount, conCount, f):
         else:
             f.write('x' + str(con[i]))
     f.write(' >= ')
-    f.write(str(randint(-10, 10)))
+    f.write(str(randint(-1000, 1000)))
     f.write('\n')

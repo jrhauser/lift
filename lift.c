@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
     }
     
     // declare input buffer
-    char input[100];
+    char input[10000];
     // read from hornexfile and  get number of variables
     fgets(input, 100, hornexfile);
     input[strcspn(input, "\n")] = '\0';
@@ -72,14 +72,14 @@ int main(int argc, char* argv[]) {
   // loop through the constraints
     for (int i = 0; i < con_count; i++) {
         // get the first line of constraints
-        fgets(input, 100, hornexfile);
+        fgets(input, 10000, hornexfile);
         // null terminate the input
         input[strcspn(input, "\n")] = '\0';
         // split the first line on the spaces, should give the first variable
         token = strtok(input, " ");
         
         // array for substrings
-        char sub[10];
+        char sub[100];
 
         // previous token so we know what came before the current token
         char* prev = NULL;
@@ -87,6 +87,9 @@ int main(int argc, char* argv[]) {
         while (token != NULL) {
             // check if the current token is a "-"
             if (strcmp(token, "-") == 0) {
+                if (prev == NULL) {
+                    puts("we have a problem");
+                }
                 strcpy(prev, "-");
                 token = strtok(NULL, " ");
                 continue;
@@ -101,7 +104,7 @@ int main(int argc, char* argv[]) {
                  if (prev == NULL) {
                     if (strcmp(sub, "-") == 0) {    
                         // get the number of the variable and put it in the out list              
-                        substring(token, sub, 3, 1);
+                        substring(token, sub, 3, 2);
                         node* p = malloc(sizeof(node));
                         p->i = i;
                         p->next = arr[atoi(sub) - 1]->out;
@@ -110,7 +113,7 @@ int main(int argc, char* argv[]) {
                         strcpy(prev, "x");
                     } else {
                         // get the number of the varioble
-                        substring(token, sub, 2, 1);                        
+                        substring(token, sub, 2, 2);                        
                          // insert the new index at the head of the in list
                         node* p = malloc(sizeof(node));
                         p->i = i;
@@ -125,7 +128,7 @@ int main(int argc, char* argv[]) {
                     // The variable is negative
                     if (strcmp(prev, "-") == 0) {
                             // get the number of the variable
-                            substring(token, sub, 2, 1);
+                            substring(token, sub, 2, 2);
                             
                             // insert the new index at the head of the out list
                             node* p = malloc(sizeof(node));
@@ -135,7 +138,7 @@ int main(int argc, char* argv[]) {
                     // the variable is positive
                     } else if(strcmp(sub, "x") == 0) {
                             // get the number of the variable
-                            substring(token, sub, 2, 1);
+                            substring(token, sub, 2, 2);
 
                             // insert the ne index at the head of in list
                             node* p = malloc(sizeof(node));
