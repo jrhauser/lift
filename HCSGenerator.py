@@ -3,11 +3,11 @@ from random import randint
 from random import shuffle
 
 
-def headerGen(varCount, conCount, f):
-    f.write(str(varCount) + "\n")
-    f.write(str(conCount) + "\n")
+def headerGen(varCount, conCount, hornex):
+    hornex.write(str(varCount) + "\n")
+    hornex.write(str(conCount) + "\n")
 
-def constraintGen(varCount, f):
+def constraintGen(varCount, hornex):
     width = randint(1, varCount)
     con = [var for var in range(1, varCount + 1)]
     shuffle(con)
@@ -16,18 +16,18 @@ def constraintGen(varCount, f):
             neg = randint(0, 1)
             if (neg == 1):
                 if (width == 1):
-                    f.write('-x' + str(con[i]))
+                    hornex.write('-x' + str(con[i]))
                 else:
-                    f.write('-x' + str(con[i]) + ' - ')
+                    hornex.write('-x' + str(con[i]) + ' - ')
             else:
                 if (width == 1):
-                    f.write('x' + str(con[i]))
+                    hornex.write('x' + str(con[i]))
                 else:
-                    f.write('x' + str(con[i]) + ' - ')
+                    hornex.write('x' + str(con[i]) + ' - ')
         elif (i < width - 1):
-            f.write('x' + str(con[i]) + ' - ')
+            hornex.write('x' + str(con[i]) + ' - ')
         else:
-            f.write('x' + str(con[i]))
-    f.write(' >= ')
-    f.write(str(randint(-1000, 1000)))
-    f.write('\n')
+            hornex.write('x' + str(con[i]))
+    hornex.write(' >= ')
+    hornex.write(str(randint(-1000, 1000)))
+    hornex.write('\n')

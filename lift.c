@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     // open/create results file
     FILE* resultsFile = fopen("timing.csv", "ab+");
     if (resultsFile == NULL) {
-        printf("Couldn't open hornexfile %s\n", strerror(errno));
+        printf("Couldn't open stats file %s\n", strerror(errno));
         exit(1);
     }
     
@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
             // check if the current token is a "-"
             if (strcmp(token, "-") == 0) {
                 if (prev == NULL) {
-                    puts("we have a problem");
+                    return -1;
                 }
                 strcpy(prev, "-");
                 token = strtok(NULL, " ");

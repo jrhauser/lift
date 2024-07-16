@@ -3,25 +3,31 @@ from HCSGenerator import headerGen, constraintGen
 from time import sleep
 from random import randint
 import pandas as pd
-def testrunner():
-    f = open('hornex.txt', 'w')
-    varCount = 10
-    conCount = 10
-    headerGen(varCount, conCount, f)
-    for i in range(10):
-        constraintGen(varCount, f)
-    f.close()
-
+def testrunner(varCount, conCount):
+    hornex = open('hornex.txt', 'w')
+    headerGen(varCount, conCount, hornex)
+    for i in range(conCount):
+        constraintGen(varCount, hornex)
+    hornex.close()
     subprocess.run(['clang', '-o', 'lift', 'lift.c'])
-    proc = subprocess.run(['./lift hornex.txt'], shell=True, capture_output=True)
+    proc = subprocess.run(['./lift hornex.txt'], shell=True)
     # print(proc.stdout.decode())
 
-for i in range(10):
-    testrunner()
+
+varCount = 100
+conCount = 100
+testRuns = 10
+with open('timing.csv', 'w', newline='') as statsCSV:
+    statsCSV.write("feasible,beginning_to_start,start_to_solution,total\n")
+
+for i in range(testRuns):
+    testrunner(varCount, conCount)
 
 df = pd.read_csv('timing.csv')
+feasibleCol = df[df['feasible'] == 1]
 
-overall = df.drop("feasible", axis=1)
+infeasibleCol = df[df['feasible'] == 0]
+overall = df.drop('feasible', axis=1)
 
 overallMax = overall.max()
 overallMin = overall.min()
@@ -31,9 +37,7 @@ overallAvg = overall.mean()
 
 
 
-feasibleCol = df[df["feasible"] == 1]
 
-infeasibleCol = df[df["feasible"] == 0]
 
 feasibleCol = feasibleCol.drop('feasible', axis=1)
 
@@ -45,56 +49,62 @@ feasibleAvg = feasibleCol.mean()
 infeasibleCol = infeasibleCol.drop('feasible', axis=1)
 
 
-infeasibleMax = feasibleCol.max()
-infeasibleMin = feasibleCol.min()
-infeasibleAvg = feasibleCol.mean()
+print(infeasibleCol)
 
+infeasibleMax = infeasibleCol.max()
+infeasibleMin = infeasibleCol.min()
+infeasibleAvg = infeasibleCol.mean()
 
-print("total average:")
+f = open("stats.txt", "a")
+f.write("------------------------\n")
+f.write("Variables: " + str(varCount) + "\n")
+f.write("Constraints: " + str(conCount) + "\n")
 
-print(overallAvg.to_string())
+f.write("total average: ")
+f.write("\n")
+f.write(overallAvg.to_string() + "\n")
 
-print("\n")
-print("total max:")
+f.write("\n")
+f.write("total max:")
+f.write("\n")
+f.write(overallMax.to_string() + "\n")
 
-print(overallMax.to_string())
+f.write("\n")
 
-print("\n")
+f.write("total min:")
+f.write("\n")
+f.write(overallMin.to_string() + "\n")
 
-print("total min:")
+f.write("feasible average:")
+f.write("\n")
+f.write(feasibleAvg.to_string() + "\n")
 
-print(overallMin.to_string())
+f.write("\n")
+f.write("feasible max:")
+f.write("\n")
+f.write(feasibleMax.to_string() + "\n")
 
-print("feasible average:")
+f.write("\n")
 
-print(feasibleAvg.to_string())
+f.write("feasible min:" )
+f.write("\n")
+f.write(feasibleMin.to_string() + "\n")
 
-print("\n")
-print("feasible max:")
+f.write("\n")
 
-print(feasibleMax.to_string())
+f.write("infeasible average:")
+f.write("\n")
+f.write(infeasibleAvg.to_string() + "\n")
 
-print("\n")
+f.write("\n")
+f.write("infeasible max:")
+f.write("\n")
+f.write(infeasibleMax.to_string() + "\n")
 
-print("feasible min:")
+f.write("\n")
 
-print(feasibleMin.to_string())
+f.write("infeasible min:")
+f.write("\n")
+f.write(infeasibleMin.to_string() + "\n")
 
-print("\n")
-
-print("infeasible average:")
-
-print(infeasibleAvg.to_string())
-
-print("\n")
-print("infeasible max:")
-
-print(infeasibleMax.to_string())
-
-print("\n")
-
-print("infeasible min:")
-
-print(infeasibleMin.to_string())
-
-
+f.write("--------------------------")

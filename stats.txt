@@ -1,0 +1,47 @@
+------------------------
+Variables: 100
+Constraints: 100
+total average: 
+beginning_to_start    0.000859
+start_to_solution     0.000826
+total                 0.001685
+
+total max:
+beginning_to_start    0.001143
+start_to_solution     0.001210
+total                 0.002108
+
+total min:
+beginning_to_start    0.000695
+start_to_solution     0.000680
+total                 0.001460
+feasible average:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+feasible max:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+feasible min:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+infeasible average:
+beginning_to_start    0.000859
+start_to_solution     0.000826
+total                 0.001685
+
+infeasible max:
+beginning_to_start    0.001143
+start_to_solution     0.001210
+total                 0.002108
+
+infeasible min:
+beginning_to_start    0.000695
+start_to_solution     0.000680
+total                 0.001460
+--------------------------
