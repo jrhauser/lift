@@ -29,5 +29,5 @@ def constraintGen(varCount, hornex):
         else:
             hornex.write('x' + str(con[i]))
     hornex.write(' >= ')
-    hornex.write(str(randint(-1000, 1000)))
+    hornex.write(str(randint(-10000, 10000)))
     hornex.write('\n')

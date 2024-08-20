@@ -11,12 +11,11 @@ def testrunner(varCount, conCount):
     hornex.close()
     subprocess.run(['clang', '-o', 'lift', 'lift.c'])
     proc = subprocess.run(['./lift hornex.txt'], shell=True)
-    # print(proc.stdout.decode())
 
 
-varCount = 100
-conCount = 100
-testRuns = 10
+varCount = 3000
+conCount = 3000
+testRuns = 1
 with open('timing.csv', 'w', newline='') as statsCSV:
     statsCSV.write("feasible,beginning_to_start,start_to_solution,total\n")
 
@@ -49,7 +48,6 @@ feasibleAvg = feasibleCol.mean()
 infeasibleCol = infeasibleCol.drop('feasible', axis=1)
 
 
-print(infeasibleCol)
 
 infeasibleMax = infeasibleCol.max()
 infeasibleMin = infeasibleCol.min()

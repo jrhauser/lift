@@ -1,20 +1,20 @@
 ------------------------
-Variables: 100
-Constraints: 100
+Variables: 1000
+Constraints: 1000
 total average: 
-beginning_to_start    0.000859
-start_to_solution     0.000826
-total                 0.001685
+beginning_to_start    0.074
+start_to_solution     4.841
+total                 4.915
 
 total max:
-beginning_to_start    0.001143
-start_to_solution     0.001210
-total                 0.002108
+beginning_to_start    0.08
+start_to_solution     5.42
+total                 5.49
 
 total min:
-beginning_to_start    0.000695
-start_to_solution     0.000680
-total                 0.001460
+beginning_to_start    0.07
+start_to_solution     4.41
+total                 4.49
 feasible average:
 beginning_to_start   NaN
 start_to_solution    NaN
@@ -31,17 +31,201 @@ start_to_solution    NaN
 total                NaN
 
 infeasible average:
-beginning_to_start    0.000859
-start_to_solution     0.000826
-total                 0.001685
+beginning_to_start    0.074
+start_to_solution     4.841
+total                 4.915
 
 infeasible max:
-beginning_to_start    0.001143
-start_to_solution     0.001210
-total                 0.002108
+beginning_to_start    0.08
+start_to_solution     5.42
+total                 5.49
 
 infeasible min:
-beginning_to_start    0.000695
-start_to_solution     0.000680
-total                 0.001460
+beginning_to_start    0.07
+start_to_solution     4.41
+total                 4.49
+--------------------------------------------------
+Variables: 3000
+Constraints: 3000
+total average: 
+beginning_to_start      0.73
+start_to_solution     298.55
+total                 299.28
+
+total max:
+beginning_to_start      0.73
+start_to_solution     298.55
+total                 299.28
+
+total min:
+beginning_to_start      0.73
+start_to_solution     298.55
+total                 299.28
+feasible average:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+feasible max:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+feasible min:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+infeasible average:
+beginning_to_start      0.73
+start_to_solution     298.55
+total                 299.28
+
+infeasible max:
+beginning_to_start      0.73
+start_to_solution     298.55
+total                 299.28
+
+infeasible min:
+beginning_to_start      0.73
+start_to_solution     298.55
+total                 299.28
+--------------------------------------------------
+Variables: 3000
+Constraints: 3000
+total average: 
+beginning_to_start      0.75
+start_to_solution     298.17
+total                 298.92
+
+total max:
+beginning_to_start      0.75
+start_to_solution     298.17
+total                 298.92
+
+total min:
+beginning_to_start      0.75
+start_to_solution     298.17
+total                 298.92
+feasible average:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+feasible max:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+feasible min:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+infeasible average:
+beginning_to_start      0.75
+start_to_solution     298.17
+total                 298.92
+
+infeasible max:
+beginning_to_start      0.75
+start_to_solution     298.17
+total                 298.92
+
+infeasible min:
+beginning_to_start      0.75
+start_to_solution     298.17
+total                 298.92
+--------------------------------------------------
+Variables: 3000
+Constraints: 100
+total average: 
+beginning_to_start    0.02
+start_to_solution     0.07
+total                 0.09
+
+total max:
+beginning_to_start    0.02
+start_to_solution     0.07
+total                 0.09
+
+total min:
+beginning_to_start    0.02
+start_to_solution     0.07
+total                 0.09
+feasible average:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+feasible max:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+feasible min:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+infeasible average:
+beginning_to_start    0.02
+start_to_solution     0.07
+total                 0.09
+
+infeasible max:
+beginning_to_start    0.02
+start_to_solution     0.07
+total                 0.09
+
+infeasible min:
+beginning_to_start    0.02
+start_to_solution     0.07
+total                 0.09
+--------------------------------------------------
+Variables: 10000
+Constraints: 100
+total average: 
+beginning_to_start    0.080
+start_to_solution     0.456
+total                 0.536
+
+total max:
+beginning_to_start    0.09
+start_to_solution     0.52
+total                 0.61
+
+total min:
+beginning_to_start    0.07
+start_to_solution     0.42
+total                 0.49
+feasible average:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+feasible max:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+feasible min:
+beginning_to_start   NaN
+start_to_solution    NaN
+total                NaN
+
+infeasible average:
+beginning_to_start    0.080
+start_to_solution     0.456
+total                 0.536
+
+infeasible max:
+beginning_to_start    0.09
+start_to_solution     0.52
+total                 0.61
+
+infeasible min:
+beginning_to_start    0.07
+start_to_solution     0.42
+total                 0.49
 --------------------------

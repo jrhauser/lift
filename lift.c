@@ -15,8 +15,8 @@ typedef struct variables {
     node* out;
 } var;
 
-void substring(const char* string, char* substring, int start, int length);
 
+void substring(const char *src, char *dest, int offset, int length);
 int main(int argc, char* argv[]) {
     clock_t beginning = clock();
    // verify command line arguments
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
     }
     
     // declare input buffer
-    char input[10000];
+    char input[100000];
     // read from hornexfile and  get number of variables
     fgets(input, 100, hornexfile);
     input[strcspn(input, "\n")] = '\0';
@@ -69,58 +69,58 @@ int main(int argc, char* argv[]) {
         arr[i]->in = NULL;
         arr[i]->out = NULL;
     }
+            char* prev = NULL;
   // loop through the constraints
     for (int i = 0; i < con_count; i++) {
-        // get the first line of constraints
-        fgets(input, 10000, hornexfile);
+
+        // get the next line of constraints
+        fgets(input, 1000000, hornexfile);
         // null terminate the input
         input[strcspn(input, "\n")] = '\0';
         // split the first line on the spaces, should give the first variable
         token = strtok(input, " ");
         
         // array for substrings
-        char sub[100];
-
-        // previous token so we know what came before the current token
-        char* prev = NULL;
+        char sub[10];
+        int t = 0;
+        prev = NULL;
         // loop through the tokens, each constraint, variable, >=, or RHS
         while (token != NULL) {
             // check if the current token is a "-"
             if (strcmp(token, "-") == 0) {
                 if (prev == NULL) {
+                    printf("%s\n", "oops");
                     return -1;
                 }
                 strcpy(prev, "-");
-                token = strtok(NULL, " ");
-                continue;
             // check for the right hand side and save it
             } else if (strcmp(token, ">=") == 0) {
                 token = strtok(NULL, " ");
                 b[i] = atoi(token);
             } else {
                 // get the first char in the variable
-                substring(token, sub, 1, 1);
+                substring(token, sub, 0, 1);
                 // if its the first variable
                  if (prev == NULL) {
                     if (strcmp(sub, "-") == 0) {    
                         // get the number of the variable and put it in the out list              
-                        substring(token, sub, 3, 2);
+                        substring(token, sub, 2, 4);
                         node* p = malloc(sizeof(node));
                         p->i = i;
                         p->next = arr[atoi(sub) - 1]->out;
                         arr[atoi(sub) - 1]->out = p;
-                        prev = malloc(1);
+                        prev = malloc(2);
                         strcpy(prev, "x");
                     } else {
                         // get the number of the varioble
-                        substring(token, sub, 2, 2);                        
+                        substring(token, sub, 1, 4);                        
                          // insert the new index at the head of the in list
                         node* p = malloc(sizeof(node));
                         p->i = i;
                         p->next = arr[atoi(sub) - 1]->in;
                         arr[atoi(sub) - 1]->in = p;
                         // copy the x into prev just to make it non-null
-                        prev = malloc(1);
+                        prev = malloc(2);
                         strcpy(prev, "x");
                     }
                 // this is not the first variable                                                
@@ -128,32 +128,26 @@ int main(int argc, char* argv[]) {
                     // The variable is negative
                     if (strcmp(prev, "-") == 0) {
                             // get the number of the variable
-                            substring(token, sub, 2, 2);
-                            
+                            substring(token, sub, 1, 4);
                             // insert the new index at the head of the out list
                             node* p = malloc(sizeof(node));
                             p->i = i;
                             p->next = arr[atoi(sub) - 1]->out;
                             arr[atoi(sub) - 1]->out = p;
+                            strcpy(prev, "x");
                     // the variable is positive
-                    } else if(strcmp(sub, "x") == 0) {
-                            // get the number of the variable
-                            substring(token, sub, 2, 2);
-
-                            // insert the ne index at the head of in list
-                            node* p = malloc(sizeof(node));
-                            p->i = i;
-                            p->next = arr[atoi(sub) - 1]->in;
-                            arr[atoi(sub) - 1]->in = p;
                     } else {
-                            printf("hornexfile invalid\n");
+                            printf("hornex file invalid\n");
+                            return -1;
                     }
                 }
             }
             token = strtok(NULL, " ");
+            t++;
         }
     }
     fclose(hornexfile);
+    free(prev);
     // allocate nodes for empty in or out list for each variable and store a -1 to indicate the list is empty
     for (int i = 0; i < var_count; i++) {
         node* p = malloc(sizeof(node)); 
@@ -240,7 +234,7 @@ int main(int argc, char* argv[]) {
     // if any constraint is still positive the system is infeasible
     for (int i = 0; i < con_count; i++) {
          if (b[i] > 0) {
-            //printf("System is infeasible\n");
+            printf("System is infeasible\n");
             clock_t infeasibleSolution = clock();
 
             fprintf(resultsFile, "0,");
@@ -251,15 +245,15 @@ int main(int argc, char* argv[]) {
             // total time
             fprintf(resultsFile,"%f\n", ((double)(infeasibleSolution - beginning))/CLOCKS_PER_SEC );
             fclose(resultsFile);
-            return -1;
+            return 0;
         }
     }
     // otherwise the system is feasible
-  //  printf("System is feasible\n");
-    //for (int i = 0; i < var_count; i++) {
-        // print the output
-       // printf("Var x%d is %d\n", i + 1, o[i]);
-   // } 
+    printf("System is feasible\n");
+    for (int i = 0; i < var_count; i++) {
+        //print the output
+        printf("Var x%d is %d\n", i + 1, o[i]);
+   } 
     clock_t feasibleSolution = clock();
 
     fprintf(resultsFile, "1,");
@@ -273,12 +267,10 @@ int main(int argc, char* argv[]) {
     return 0; 
 }
 
-// substring function
-void substring(const char* string, char* substring, int start, int length) {
-    int c = 0;
-    while (c < length) {
-        substring[c] = string[start + c - 1];
-        c++;
-    }
-    substring[c] = '\0';
+void substring(const char *src, char *dest, int offset, int length) {
+    // Copy the substring
+    strncpy(dest, src + offset, length);
+
+    // Null-terminate the destination string
+    dest[length] = '\0';
 }
