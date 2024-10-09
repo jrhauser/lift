@@ -1,0 +1,2 @@
+This is a project that implements an algortithim for checking the feasability of horn constraint systems invented by K. Subramani and R. Chandrasekaran. The algorithim is explained in [this paper.](https://www.sciencedirect.com/science/article/pii/S1572528612000734) 
+The project contains an implementation of the algortihim in C, and two python files. The first is a generator for random systems to run the C code on and second a script to run and keep track of the running time of the algorithim on different input sizes.
