@@ -17,11 +17,12 @@ typedef struct variables {
 
 
 void substring(const char *src, char *dest, int offset, int length);
+
 int main(int argc, char* argv[]) {
     clock_t beginning = clock();
    // verify command line arguments
-    if (argc != 2) {
-        puts("Expected one argument, the path of the file containing the HCS");
+    if (argc != 3) {
+        puts("Expected two arguments, the path of the file containing the HCS and the csv file for timing");
         exit(1);
     }
     
@@ -32,8 +33,8 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
-    // open/create results file
-    FILE* resultsFile = fopen("timing.csv", "ab+");
+    // open results file
+    FILE* resultsFile = fopen(argv[2], "ab+");
     if (resultsFile == NULL) {
         printf("Couldn't open stats file %s\n", strerror(errno));
         exit(1);
@@ -88,10 +89,6 @@ int main(int argc, char* argv[]) {
         while (token != NULL) {
             // check if the current token is a "-"
             if (strcmp(token, "-") == 0) {
-                if (prev == NULL) {
-                    printf("%s\n", "oops");
-                    return -1;
-                }
                 strcpy(prev, "-");
             // check for the right hand side and save it
             } else if (strcmp(token, ">=") == 0) {
@@ -172,13 +169,13 @@ int main(int argc, char* argv[]) {
     }
     if (neg == con_count) {
         // system is feasibe all variables are 0
-        //printf("System is feasible\n");
-        //for (int i = 0; i < var_count; i++) {
-           // printf("Var x%d is %d\n", i + 1, o[i]);
-      // }
+        printf("System is feasible\n");
+        for (int i = 0; i < var_count; i++) {
+         printf("Var x%d is %d\n", i + 1, o[i]);
+       }
         
         clock_t zeroSolution = clock();
-        fprintf(resultsFile, "0,");
+        fprintf(resultsFile, "1,");
         //From beginning to start of algortithim
         fprintf(resultsFile, "%f,", ((double)(startingAlgorithim - beginning))/CLOCKS_PER_SEC );
         // From start of algorithim to  solution 
@@ -250,7 +247,7 @@ int main(int argc, char* argv[]) {
     }
     // otherwise the system is feasible
     printf("System is feasible\n");
-    for (int i = 0; i < var_count; i++) {
+   for (int i = 0; i < var_count; i++) {
         //print the output
         printf("Var x%d is %d\n", i + 1, o[i]);
    } 
