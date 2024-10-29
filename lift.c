@@ -169,10 +169,10 @@ int main(int argc, char* argv[]) {
     }
     if (neg == con_count) {
         // system is feasibe all variables are 0
-        printf("System is feasible\n");
-        for (int i = 0; i < var_count; i++) {
-         printf("Var x%d is %d\n", i + 1, o[i]);
-       }
+        //printf("System is feasible\n");
+        //for (int i = 0; i < var_count; i++) {
+        // printf("Var x%d is %d\n", i + 1, o[i]);
+      // }
         
         clock_t zeroSolution = clock();
         fprintf(resultsFile, "1,");
@@ -181,8 +181,8 @@ int main(int argc, char* argv[]) {
         // From start of algorithim to  solution 
         fprintf(resultsFile, "%f,", ((double)(zeroSolution - startingAlgorithim))/CLOCKS_PER_SEC );
         // total time
-        fprintf(resultsFile, "%f\n", ((double)(zeroSolution - beginning))/CLOCKS_PER_SEC );
-
+        fprintf(resultsFile, "%f", ((double)(zeroSolution - beginning))/CLOCKS_PER_SEC );
+        fprintf(resultsFile, "%d\n", 1);
         fclose(resultsFile);
         return 0; 
     }
@@ -231,7 +231,7 @@ int main(int argc, char* argv[]) {
     // if any constraint is still positive the system is infeasible
     for (int i = 0; i < con_count; i++) {
          if (b[i] > 0) {
-            printf("System is infeasible\n");
+        //    printf("System is infeasible\n");
             clock_t infeasibleSolution = clock();
 
             fprintf(resultsFile, "0,");
@@ -240,17 +240,18 @@ int main(int argc, char* argv[]) {
             // From start of algorithim to  solution 
             fprintf(resultsFile, "%f,", ((double)(infeasibleSolution - startingAlgorithim))/CLOCKS_PER_SEC );
             // total time
-            fprintf(resultsFile,"%f\n", ((double)(infeasibleSolution - beginning))/CLOCKS_PER_SEC );
+            fprintf(resultsFile,"%f", ((double)(infeasibleSolution - beginning))/CLOCKS_PER_SEC );\
+            fprintf(resultsFile, "%d\n", 0);
             fclose(resultsFile);
             return 0;
         }
     }
     // otherwise the system is feasible
-    printf("System is feasible\n");
-   for (int i = 0; i < var_count; i++) {
+   // printf("System is feasible\n");
+   //for (int i = 0; i < var_count; i++) {
         //print the output
-        printf("Var x%d is %d\n", i + 1, o[i]);
-   } 
+    //    printf("Var x%d is %d\n", i + 1, o[i]);
+ //  } 
     clock_t feasibleSolution = clock();
 
     fprintf(resultsFile, "1,");
@@ -259,7 +260,8 @@ int main(int argc, char* argv[]) {
     // From start of algorithim to  solution 
     fprintf(resultsFile, "%f,", ((double)(feasibleSolution - startingAlgorithim))/CLOCKS_PER_SEC );
     // total time
-    fprintf(resultsFile, "%f\n", ((double)(feasibleSolution - beginning))/CLOCKS_PER_SEC );
+    fprintf(resultsFile, "%f", ((double)(feasibleSolution - beginning))/CLOCKS_PER_SEC );
+    fprintf(resultsFile, "%d\n", 0);
     fclose(resultsFile);
     return 0; 
 }

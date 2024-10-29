@@ -1,7 +1,5 @@
 import subprocess
-from InfeasHCSGenerator import headerGen, constraintGen
-from time import sleep
-from random import randint
+from newFeasHCSGenerator import headerGen, constraintGen
 import pandas as pd
 import datetime
 import os
