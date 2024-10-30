@@ -181,7 +181,7 @@ int main(int argc, char* argv[]) {
         // From start of algorithim to  solution 
         fprintf(resultsFile, "%f,", ((double)(zeroSolution - startingAlgorithim))/CLOCKS_PER_SEC );
         // total time
-        fprintf(resultsFile, "%f", ((double)(zeroSolution - beginning))/CLOCKS_PER_SEC );
+        fprintf(resultsFile, "%f,", ((double)(zeroSolution - beginning))/CLOCKS_PER_SEC );
         fprintf(resultsFile, "%d\n", 1);
         fclose(resultsFile);
         return 0; 
@@ -240,7 +240,7 @@ int main(int argc, char* argv[]) {
             // From start of algorithim to  solution 
             fprintf(resultsFile, "%f,", ((double)(infeasibleSolution - startingAlgorithim))/CLOCKS_PER_SEC );
             // total time
-            fprintf(resultsFile,"%f", ((double)(infeasibleSolution - beginning))/CLOCKS_PER_SEC );\
+            fprintf(resultsFile,"%f,", ((double)(infeasibleSolution - beginning))/CLOCKS_PER_SEC );\
             fprintf(resultsFile, "%d\n", 0);
             fclose(resultsFile);
             return 0;
@@ -260,7 +260,7 @@ int main(int argc, char* argv[]) {
     // From start of algorithim to  solution 
     fprintf(resultsFile, "%f,", ((double)(feasibleSolution - startingAlgorithim))/CLOCKS_PER_SEC );
     // total time
-    fprintf(resultsFile, "%f", ((double)(feasibleSolution - beginning))/CLOCKS_PER_SEC );
+    fprintf(resultsFile, "%f,", ((double)(feasibleSolution - beginning))/CLOCKS_PER_SEC );
     fprintf(resultsFile, "%d\n", 0);
     fclose(resultsFile);
     return 0; 

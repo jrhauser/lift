@@ -53,13 +53,13 @@ fiveThousand = [
         (5000, 25000000)
     ]
 varCounts = [[(100, 100)]]
-testRuns = 1000
+testRuns = 100
 for varCount in varCounts:
     for conCount in varCount:
             p = "timing/" + datetime.datetime.now().strftime("%Y_%m_%d/")
             os.makedirs(p, exist_ok=True)
             with open(p + str(conCount[0]) + "_vars" + str(conCount[1]) + "_cons.csv", "w") as statsCSV:
-                statsCSV.write("feasible,beginning_to_start,start_to_solution,total\n")
+                statsCSV.write("feasible,beginning_to_start,start_to_solution,total,zero_solution\n")
             for i in range(testRuns): 
                 testrunner(conCount[0], conCount[1], statsCSV.name)
          
@@ -91,12 +91,9 @@ for varCount in varCounts:
             infeasibleMax = infeasibleCol.max()
             infeasibleMin = infeasibleCol.min()
             infeasibleAvg = infeasibleCol.mean()
-
-            f = open("ratio.csv", 'a+')
-            f.write("ratio\n")
-            ratio = feasibleCol.size /  infeasibleCol.size
-            f.write(str(ratio) + '\n')
+            ratio = feasibleCol.size /  df.size
             print(ratio)
+            #print(df[df['zero_solution'] == 1])
 """
             f = open("stats.txt", "a")
             f.write("------------------------\n")
