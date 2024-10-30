@@ -53,7 +53,7 @@ fiveThousand = [
         (5000, 25000000)
     ]
 varCounts = [[(100, 100)]]
-testRuns = 100
+testRuns = 10
 for varCount in varCounts:
     for conCount in varCount:
             p = "timing/" + datetime.datetime.now().strftime("%Y_%m_%d/")
@@ -68,11 +68,14 @@ for varCount in varCounts:
             feasibleCol = df[df['feasible'] == 1]
 
             infeasibleCol = df[df['feasible'] == 0]
+
+            zeroCol = df[df['zero_solution'] == 1]
+
             overall = df.drop('feasible', axis=1)
 
-            overallMax = overall.max()
-            overallMin = overall.min()
-            overallAvg = overall.mean()
+            overallMax = overall["start_to_solution"].max()
+            overallMin = overall["start_to_solution"].min()
+            overallAvg = overall["start_to_solution"].mean()
 
 
 
@@ -80,74 +83,41 @@ for varCount in varCounts:
             feasibleCol = feasibleCol.drop('feasible', axis=1)
 
 
-            feasibleMax = feasibleCol.max()
-            feasibleMin = feasibleCol.min()
-            feasibleAvg = feasibleCol.mean()
+            feasibleMax = feasibleCol["start_to_solution"].max()
+            feasibleMin = feasibleCol["start_to_solution"].min()
+            feasibleAvg = feasibleCol["start_to_solution"].mean()
+
+
 
             infeasibleCol = infeasibleCol.drop('feasible', axis=1)
 
-
-
-            infeasibleMax = infeasibleCol.max()
-            infeasibleMin = infeasibleCol.min()
-            infeasibleAvg = infeasibleCol.mean()
+            infeasibleMax = infeasibleCol["start_to_solution"].max()
+            infeasibleMin = infeasibleCol["start_to_solution"].min()
+            infeasibleAvg = infeasibleCol["start_to_solution"].mean()
+            
+            
+            zero_max = zeroCol["start_to_solution"].max()
+            zero_min = zeroCol["start_to_solution"].min()
+            zero_avg = zeroCol["start_to_solution"].mean()
+            
+            
+            
             ratio = feasibleCol.size /  df.size
             print(ratio)
             #print(df[df['zero_solution'] == 1])
-"""
-            f = open("stats.txt", "a")
-            f.write("------------------------\n")
-            f.write(str(datetime.datetime.now()) + '\n')
-            f.write("Variables: " + str(conCount[0]) + "\n")
-            f.write("Constraints: " + str(conCount[1]) + "\n")
 
-            f.write("total average: ")
-            f.write("\n")
-            f.write(overallAvg.to_string() + "\n")
-
-            f.write("\n")
-            f.write("total max:")
-            f.write("\n")
-            f.write(overallMax.to_string() + "\n")
-
-            f.write("\n")
-
-            f.write("total min:")
-            f.write("\n")
-            f.write(overallMin.to_string() + "\n")
-
-            f.write("feasible average:")
-            f.write("\n")
-            f.write(feasibleAvg.to_string() + "\n")
-
-            f.write("\n")
-            f.write("feasible max:")
-            f.write("\n")
-            f.write(feasibleMax.to_string() + "\n")
-
-            f.write("\n")
-
-            f.write("feasible min:" )
-            f.write("\n")
-            f.write(feasibleMin.to_string() + "\n")
-
-            f.write("\n")
-
-            f.write("infeasible average:")
-            f.write("\n")
-            f.write(infeasibleAvg.to_string() + "\n")
-
-            f.write("\n")
-            f.write("infeasible max:")
-            f.write("\n")
-            f.write(infeasibleMax.to_string() + "\n")
-
-            f.write("\n")
-
-            f.write("infeasible min:")
-            f.write("\n")
-            f.write(infeasibleMin.to_string() + "\n")
-
-            f.write("--------------------------")
+            f = open("stats.csv", "a+")
+            f.write(str(testRuns) + ',')
+            f.write(str(conCount[0]) + ",")
+            f.write(str(conCount[1]) + ',')
+            f.write(str(datetime.datetime.now()) + ",")
+            f.write(str(overallAvg) + ",")
+            f.write(str(overallMax) + ",")
+            f.write(str(overallMin) + ",")
+            f.write(str(feasibleAvg) + ",")
+            f.write(str(feasibleMax) + ",")
+            f.write(str(feasibleMin) + ",")
+            f.write(str(infeasibleAvg) + ",")
+            f.write(str(infeasibleMax) + "," + str(infeasibleMin) + "," + str(zero_max) + "," + str(zero_min) + ',' +  str(zero_avg) +"\n")
             statsCSV.close()
-            f.close() """
+            f.close()
