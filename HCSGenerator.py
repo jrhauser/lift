@@ -3,11 +3,11 @@ from random import randint
 from random import shuffle
 
 
-def headerGen(varCount, conCount, hornex):
+def infeasHeaderGen(varCount, conCount, hornex):
     hornex.write(str(varCount) + "\n")
     hornex.write(str(conCount) + "\n")
 
-def constraintGen(varCount, hornex):
+def infeasConstraintGen(varCount, hornex):
     width = randint(1, varCount)
     con = [var for var in range(1, varCount + 1)]
     shuffle(con)

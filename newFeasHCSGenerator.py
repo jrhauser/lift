@@ -1,29 +1,51 @@
-from random import randrange
 from random import randint
 from random import shuffle
+import math
+import numpy as np
 
-
-def headerGen(varCount, conCount, hornex):
+def feasHeaderGen(varCount, conCount, hornex):
     hornex.write(str(varCount) + "\n")
     hornex.write(str(conCount) + "\n")
 
-def constraintGen(varCount, hornex):
+def printPosRHS(newConstraint, hornex, matrix, varCount, con):
+    matrix[con[0] - 1] = np.ones(varCount)
+    for x in con:
+        if (newConstraint[x - 1] == 1):
+            hornex.write("x" + str(x))
+        elif (newConstraint[x - 1] == 0):
+            if (matrix[x - 1][con[0] - 1] == 1):
+                continue
+            hornex.write(" - " + "x" + str(x))    
+    hornex.write(' >= ')
+    hornex.write(str(randint(1000, 5000))) 
+
+
+def prinNegRHS(newConstraint, hornex, matrix, varCount, con):
+    matrix[con[0] - 1] = np.ones(varCount)
+    for x in con:
+        if (newConstraint[x - 1] == 1):
+            hornex.write("x" + str(x))
+        elif (newConstraint[x - 1] == 0):
+            if (matrix[x - 1][con[0] - 1] == 1):
+                continue
+            hornex.write(" - " + "x" + str(x))    
+    hornex.write(' >= ')
+    hornex.write(str(randint(-10000, -5000)))
+
+
+
+def feasConstraintGen(varCount, hornex, conCount, matrix):
     width = randint(1, varCount)
     con = [var for var in range(1, varCount + 1)]
     shuffle(con)
+    newConstraint = np.zeros(varCount)
     for i in range(width):
         if (i == 0):
-            if (width == 1):
-                hornex.write('x' + str(con[i]))
-            else:
-                hornex.write('x' + str(con[i]) + ' - ')
-        elif (i < width - 1):
-            hornex.write('x' + str(con[i]) + ' - ')
+            newConstraint[con[i] - 1] = 1
         else:
-            hornex.write('x' + str(con[i]))
-    hornex.write(' >= ')
-    if (randint(0, 50) == 1):
-        hornex.write(str(randint(100, 50000)))   
-    else:
-        hornex.write(str(randint(-10000000, -100000)))
+            newConstraint[con[i] - 1] = -1
+        if (randint(0, 1) ==  0):
+            prinNegRHS(newConstraint, hornex, matrix, varCount, con)
+        else:
+            printPosRHS(newConstraint, hornex, matrix, varCount, con) 
     hornex.write('\n')

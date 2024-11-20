@@ -71,6 +71,8 @@ int main(int argc, char* argv[]) {
         arr[i]->out = NULL;
     }
             char* prev = NULL;
+
+
   // loop through the constraints
     for (int i = 0; i < con_count; i++) {
 
@@ -145,6 +147,7 @@ int main(int argc, char* argv[]) {
     }
     fclose(hornexfile);
     free(prev);
+    int lifts;
     // allocate nodes for empty in or out list for each variable and store a -1 to indicate the list is empty
     for (int i = 0; i < var_count; i++) {
         node* p = malloc(sizeof(node)); 
@@ -182,7 +185,8 @@ int main(int argc, char* argv[]) {
         fprintf(resultsFile, "%f,", ((double)(zeroSolution - startingAlgorithim))/CLOCKS_PER_SEC );
         // total time
         fprintf(resultsFile, "%f,", ((double)(zeroSolution - beginning))/CLOCKS_PER_SEC );
-        fprintf(resultsFile, "%d\n", 1);
+        fprintf(resultsFile, "%d,", 1);
+        fprintf(resultsFile, "%d\n", lifts);
         fclose(resultsFile);
         return 0; 
     }
@@ -206,6 +210,7 @@ int main(int argc, char* argv[]) {
             }
             // the lifting procedure
             if (c > 0) {
+                lifts++;
                 // decrement all the places the variable appears positively
                 node* p = arr[i]->in;
                 while (p != NULL) {
@@ -241,7 +246,8 @@ int main(int argc, char* argv[]) {
             fprintf(resultsFile, "%f,", ((double)(infeasibleSolution - startingAlgorithim))/CLOCKS_PER_SEC );
             // total time
             fprintf(resultsFile,"%f,", ((double)(infeasibleSolution - beginning))/CLOCKS_PER_SEC );\
-            fprintf(resultsFile, "%d\n", 0);
+            fprintf(resultsFile, "%d,", 0);
+            fprintf(resultsFile, "%d\n", lifts);
             fclose(resultsFile);
             return 0;
         }
@@ -261,7 +267,8 @@ int main(int argc, char* argv[]) {
     fprintf(resultsFile, "%f,", ((double)(feasibleSolution - startingAlgorithim))/CLOCKS_PER_SEC );
     // total time
     fprintf(resultsFile, "%f,", ((double)(feasibleSolution - beginning))/CLOCKS_PER_SEC );
-    fprintf(resultsFile, "%d\n", 0);
+    fprintf(resultsFile, "%d,", 0);
+    fprintf(resultsFile, "%d\n", lifts);
     fclose(resultsFile);
     return 0; 
 }

@@ -1,16 +1,21 @@
+from random import randint
 import subprocess
-from newFeasHCSGenerator import headerGen, constraintGen
+from newFeasHCSGenerator import feasHeaderGen, feasConstraintGen
+from HCSGenerator import infeasHeaderGen, infeasConstraintGen
 import pandas as pd
 import datetime
+import numpy as np
 import os
 def testrunner(varCount, conCount, filename):
     hornex = open('hornex.txt', 'w')
-    headerGen(varCount, conCount, hornex)
+    feasHeaderGen(varCount, conCount, hornex)
+    matrix = np.zeros((varCount, varCount))
     for i in range(conCount):
-        constraintGen(varCount, hornex)
+        feasConstraintGen(varCount, hornex, conCount, matrix)
     hornex.close()
-    subprocess.run(['clang', '-o', 'lift', 'lift.c'])
+    subprocess.run(['gcc', '-std=c99', '-o', 'lift', 'lift.c'])
     proc = subprocess.run([str('./lift hornex.txt ' + filename)], shell=True)
+
 
 
 
@@ -32,34 +37,34 @@ fiveHundreds = [
         (500, 500),
         (500, 1000),
         (500, 4500),
-        (500, 250000)
+        #(500, 250000)
     ]
 thousands = [
         (1000, 2000),
         (1000, 4500),
         (1000, 10000),
-        (1000, 1000000)
+        #(1000, 1000000)
     ]
 twoThousand = [
         (2000, 5000),
         (2000, 4000),
         (2000, 22000),
-        (2000, 4000000)
+       # (2000, 4000000)
     ]
 fiveThousand = [
         (5000, 5000),
         (5000, 10000),
         (5000, 60000),
-        (5000, 25000000)
+       # (5000, 25000000)
     ]
-varCounts = [[(100, 100)]]
+varCounts = [hundreds, twoHundreds, fiveHundreds]
 testRuns = 10
 for varCount in varCounts:
     for conCount in varCount:
             p = "timing/" + datetime.datetime.now().strftime("%Y_%m_%d/")
             os.makedirs(p, exist_ok=True)
             with open(p + str(conCount[0]) + "_vars" + str(conCount[1]) + "_cons.csv", "w") as statsCSV:
-                statsCSV.write("feasible,beginning_to_start,start_to_solution,total,zero_solution\n")
+                statsCSV.write("feasible,beginning_to_start,start_to_solution,total,zero_solution,lifts\n")
             for i in range(testRuns): 
                 testrunner(conCount[0], conCount[1], statsCSV.name)
          
@@ -104,7 +109,7 @@ for varCount in varCounts:
             
             ratio = feasibleCol.size /  df.size
             print(ratio)
-            #print(df[df['zero_solution'] == 1])
+           # print(df[df['zero_solution'] == 1].size / feasibleCol.size)
 
             f = open("stats.csv", "a+")
             f.write(str(testRuns) + ',')

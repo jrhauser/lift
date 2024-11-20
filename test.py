@@ -1,7 +1,8 @@
-from feasHCSGenerator import headerGen, constraintGen
-
+from newFeasHCSGenerator import headerGen, constraintGen
+import numpy as np
 hornex = open('hornextest.txt', 'w')
-headerGen(100, 100, hornex)
-for i in range(100):
-    constraintGen(100, hornex)
+matrix = np.zeros((10, 10))
+headerGen(10, 10, hornex)
+for i in range(10):
+    constraintGen(10, hornex, 10, matrix)
 hornex.close()
