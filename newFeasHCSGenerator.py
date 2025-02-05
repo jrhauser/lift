@@ -1,9 +1,8 @@
 from random import randint
 from random import shuffle
-import math
 import numpy as np
 
-def feasHeaderGen(varCount, conCount, hornex):
+def headerGen(varCount, conCount, hornex):
     hornex.write(str(varCount) + "\n")
     hornex.write(str(conCount) + "\n")
 
@@ -17,7 +16,8 @@ def printPosRHS(newConstraint, hornex, matrix, varCount, con):
                 continue
             hornex.write(" - " + "x" + str(x))    
     hornex.write(' >= ')
-    hornex.write(str(randint(1000, 5000))) 
+    hornex.write(str(randint(1000, 5000)))
+    hornex.write("\n")
 
 
 def prinNegRHS(newConstraint, hornex, matrix, varCount, con):
@@ -31,10 +31,10 @@ def prinNegRHS(newConstraint, hornex, matrix, varCount, con):
             hornex.write(" - " + "x" + str(x))    
     hornex.write(' >= ')
     hornex.write(str(randint(-10000, -5000)))
+    hornex.write("\n")
 
 
-
-def feasConstraintGen(varCount, hornex, conCount, matrix):
+def constraintGen(varCount, hornex, conCount, matrix):
     width = randint(1, varCount)
     con = [var for var in range(1, varCount + 1)]
     shuffle(con)
@@ -44,8 +44,7 @@ def feasConstraintGen(varCount, hornex, conCount, matrix):
             newConstraint[con[i] - 1] = 1
         else:
             newConstraint[con[i] - 1] = -1
-        if (randint(0, 1) ==  0):
-            prinNegRHS(newConstraint, hornex, matrix, varCount, con)
-        else:
+        if (randint(0, 5) ==  0):
             printPosRHS(newConstraint, hornex, matrix, varCount, con) 
-    hornex.write('\n')
+        else:
+            prinNegRHS(newConstraint, hornex, matrix, varCount, con)

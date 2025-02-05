@@ -1,17 +1,15 @@
-from random import randint
 import subprocess
-from newFeasHCSGenerator import feasHeaderGen, feasConstraintGen
-from HCSGenerator import infeasHeaderGen, infeasConstraintGen
+from newFeasHCSGenerator import headerGen, constraintGen
 import pandas as pd
 import datetime
 import numpy as np
 import os
 def testrunner(varCount, conCount, filename):
     hornex = open('hornex.txt', 'w')
-    feasHeaderGen(varCount, conCount, hornex)
+    headerGen(varCount, conCount, hornex)
     matrix = np.zeros((varCount, varCount))
     for i in range(conCount):
-        feasConstraintGen(varCount, hornex, conCount, matrix)
+        constraintGen(varCount, hornex, conCount, matrix)
     hornex.close()
     subprocess.run(['gcc', '-std=c99', '-o', 'lift', 'lift.c'])
     proc = subprocess.run([str('./lift hornex.txt ' + filename)], shell=True)
