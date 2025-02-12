@@ -6,45 +6,59 @@ def headerGen(varCount, conCount, hornex):
     hornex.write(str(varCount) + "\n")
     hornex.write(str(conCount) + "\n")
 
-def printPosRHS(newConstraint, hornex, matrix, varCount, con):
-    matrix[con[0] - 1] = np.ones(varCount)
-    for x in con:
-        if (newConstraint[x - 1] == 1):
-            hornex.write("x" + str(x))
-        elif (newConstraint[x - 1] == 0):
-            if (matrix[x - 1][con[0] - 1] == 1):
-                continue
-            hornex.write(" - " + "x" + str(x))    
+def printPosRHS(newConstraint, hornex, conTable, vars):
+    rhs = randint(1000, 5000)
+    posVar = vars[0]
+    hornex.write("x" + str(vars[0]))
+    slice = vars[1:len(newConstraint)]
+    for i in slice:
+        bad = False
+        for conEntry in conTable:
+            if ((posVar in conEntry[0]) and (rhs + conEntry[1] > 0)):
+                bad = True
+                break
+        if (bad):
+            continue
+        conTable.append(([] , rhs))
+        conTable[-1][0].append(i)
+        hornex.write(" - " + "x" + str(i))    
     hornex.write(' >= ')
-    hornex.write(str(randint(1000, 5000)))
+    hornex.write(str(rhs))
     hornex.write("\n")
 
 
-def prinNegRHS(newConstraint, hornex, matrix, varCount, con):
-    matrix[con[0] - 1] = np.ones(varCount)
-    for x in con:
-        if (newConstraint[x - 1] == 1):
-            hornex.write("x" + str(x))
-        elif (newConstraint[x - 1] == 0):
-            if (matrix[x - 1][con[0] - 1] == 1):
-                continue
-            hornex.write(" - " + "x" + str(x))    
+def prinNegRHS(newConstraint, hornex, conTable, vars):
+    rhs = randint(-5000, -1000)
+    posVar = vars[0]
+    hornex.write("x" + str(vars[0]))
+    slice = vars[1:len(newConstraint)]
+    for i in slice:
+        bad = False
+        for conEntry in conTable:
+            if ((posVar in conEntry[0]) and (rhs + conEntry[1] > 0)):
+                bad = True
+                break
+        if (bad):
+            continue
+        conTable.append(([] , rhs))
+        conTable[-1][0].append(i)
+        hornex.write(" - " + "x" + str(i))    
     hornex.write(' >= ')
-    hornex.write(str(randint(-10000, -5000)))
+    hornex.write(str(rhs))
     hornex.write("\n")
 
 
-def constraintGen(varCount, hornex, conCount, matrix):
+def constraintGen(varCount, hornex, conTable, conCount):
     width = randint(1, varCount)
-    con = [var for var in range(1, varCount + 1)]
-    shuffle(con)
-    newConstraint = np.zeros(varCount)
+    vars = [var for var in range(1, varCount + 1)]
+    shuffle(vars)
+    newConstraint = []
     for i in range(width):
         if (i == 0):
-            newConstraint[con[i] - 1] = 1
+            newConstraint.append(1)
         else:
-            newConstraint[con[i] - 1] = -1
-        if (randint(0, 5) ==  0):
-            printPosRHS(newConstraint, hornex, matrix, varCount, con) 
-        else:
-            prinNegRHS(newConstraint, hornex, matrix, varCount, con)
+            newConstraint.append(-1)
+    if (randint(0, conCount // 5) ==  0):
+        prinNegRHS(newConstraint, hornex, conTable, vars)      
+    else:
+       printPosRHS(newConstraint, hornex, conTable, vars) 

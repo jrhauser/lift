@@ -16,6 +16,9 @@ typedef struct variables {
 } var;
 
 
+int MAX_LINE_LENGTH = 1 << 17;
+
+
 void substring(const char *src, char *dest, int offset, int length);
 
 int main(int argc, char* argv[]) {
@@ -41,7 +44,7 @@ int main(int argc, char* argv[]) {
     }
     
     // declare input buffer
-    char input[100000];
+    char input[MAX_LINE_LENGTH];
     // read from hornexfile and  get number of variables
     fgets(input, 100, hornexfile);
     input[strcspn(input, "\n")] = '\0';
@@ -77,7 +80,7 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < con_count; i++) {
 
         // get the next line of constraints
-        fgets(input, 1000000, hornexfile);
+        fgets(input, MAX_LINE_LENGTH, hornexfile);
         // null terminate the input
         input[strcspn(input, "\n")] = '\0';
         // split the first line on the spaces, should give the first variable
