@@ -5,16 +5,18 @@ import datetime
 import numpy as np
 import os
 import csv
+from pathlib import Path
 import multiprocessing
 def testRunner(varCount, conCount, timing):
-    hornex = open('hornex.txt', 'w+')
-    headerGen(varCount, conCount, hornex)
-    conTable = []
-    for i in range(conCount):
-        constraintGen(varCount, hornex, conTable, conCount)
-    hornex.close()
+    path = "test_systems/" + str(varCount) + "/" + str(conCount) + "/feasible/"
+    directoryContents = os.listdir(path)
     subprocess.run(['gcc', '-std=c99', '-o', 'lift', 'lift.c'])
-    proc = subprocess.run([str('./lift hornex.txt ' + timing)], shell=True)
+    for file in directoryContents:
+        subprocess.run(["./lift", path + file, timing])
+    path = "test_systems/" + str(varCount) + "/" + str(conCount) + "/infeasible/"
+    directoryContents = os.listdir(path)
+    for file in directoryContents:
+        subprocess.run(["./lift", path + file, timing])
 
 
 def getFileNum(hornPath):
@@ -99,8 +101,8 @@ def systemGenerator(varCount, conCount, timing, feasNum):
 
 
 
-def statsGenerator(timing):
-            df = pd.read_csv(timing.name)
+def statsGenerator(timing, conCount):
+            df = pd.read_csv(timing)
             feasibleCol = df[df['feasible'] == 1]
 
             infeasibleCol = df[df['feasible'] == 0]
@@ -138,8 +140,7 @@ def statsGenerator(timing):
             
             
             
-            ratio = feasibleCol.size /  df.size
-            print(ratio)
+            #ratio = feasibleCol.size / df.size
            # print(df[df['zero_solution'] == 1].size / feasibleCol.size)
 
             f = open("stats.csv", "a+")
@@ -155,8 +156,44 @@ def statsGenerator(timing):
             f.write(str(feasibleMin) + ",")
             f.write(str(infeasibleAvg) + ",")
             f.write(str(infeasibleMax) + "," + str(infeasibleMin) + "," + str(zero_max) + "," + str(zero_min) + ',' +  str(zero_avg) +"\n")
-            timing.close()
             f.close()
+
+
+def testRun():
+    for varCount in varCounts:
+        for conCount in varCount:
+            p = "timing/" + datetime.datetime.now().strftime("%Y_%m_%d/")
+            os.makedirs(p, exist_ok=True)
+            f = open(p + str(conCount[0]) + "_vars_" + str(conCount[1]) + "_cons.csv", 'w+')
+            f.write("feasible,beginning_to_start,start_to_solution,total,zero_solution,lifts\n")
+            timing = f.name
+            f.close()
+            for _ in range(testRuns): 
+                testRunner(conCount[0], conCount[1], timing) 
+            statsGenerator(timing, conCount)
+
+
+
+
+
+
+def procLoop(varCount):
+    for conCount in varCount:
+            p = "generatorTiming" + str(timingNum) +"/" + datetime.datetime.now().strftime("%Y_%m_%d/")
+            os.makedirs(p, exist_ok=True)
+            with open(p + str(conCount[0]) + "_vars_" + str(conCount[1]) + "_cons.csv", 'w+') as timing:
+                timing.write("feasible,beginning_to_start,start_to_solution,total,zero_solution,lifts\n")
+            systemGenerator(conCount[0], conCount[1], timing.name, testRuns)
+
+
+def multiProcGenerate():
+    processes = []
+    for varCount in varCounts:
+        p = multiprocessing.Process(target=procLoop, args=(varCount,))
+        processes.append(p)
+        p.start()
+    for p in processes:
+        p.join()
 
 
 hundreds = [
@@ -204,47 +241,12 @@ fiveThousand1 = [
 fiveThousand2 = [
         (5000, 25000000)
     ]
-varCounts = [fiveHundreds, thousands, thousandsPT2, twoThousand, twoThousandPT2, fiveThousand, fiveThousand1, fiveThousand2]
-testRuns = 20
+#varCounts = [fiveHundreds, thousands, thousandsPT2, twoThousand, twoThousandPT2, fiveThousand, fiveThousand1, fiveThousand2]
+varCounts = [hundreds]
+testRuns = 1
 timingNum = 1
-""" for varCount in varCounts:
-    for conCount in varCount:
-            p = "generatorTiming" + str(timingNum) +"/" + datetime.datetime.now().strftime("%Y_%m_%d/")
-            os.makedirs(p, exist_ok=True)
-            with open(p + str(conCount[0]) + "_vars_" + str(conCount[1]) + "_cons.csv", 'w+') as timing:
-                timing.write("feasible,beginning_to_start,start_to_solution,total,zero_solution,lifts\n")
-            
-
-
-            systemGenerator(conCount[0], conCount[1], timing.name, testRuns)
-            
-            #for _ in range(testRuns): 
-                #testRunner(conCount[0], conCount[1], timing.name) 
-            #statsGenerator(timing)
- """
-
-
-
-
-
-def procLoop(varCount):
-    for conCount in varCount:
-            p = "generatorTiming" + str(timingNum) +"/" + datetime.datetime.now().strftime("%Y_%m_%d/")
-            os.makedirs(p, exist_ok=True)
-            with open(p + str(conCount[0]) + "_vars_" + str(conCount[1]) + "_cons.csv", 'w+') as timing:
-                timing.write("feasible,beginning_to_start,start_to_solution,total,zero_solution,lifts\n")
-            systemGenerator(conCount[0], conCount[1], timing.name, testRuns)
 
 
 if __name__ == "__main__":
-     processes = []
-     for varCount in varCounts:
-            p = multiprocessing.Process(target=procLoop, args=(varCount,))
-            processes.append(p)
-            p.start()
-            
-            #for _ in range(testRuns): 
-                #testRunner(conCount[0], conCount[1], timing.name) 
-            #statsGenerator(timing)
-     for p in processes:
-        p.join()
+    # multiProcGenerate()
+    testRun()
