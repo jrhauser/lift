@@ -1,3 +1,4 @@
-for file in ./test_systems/100/100/feasible/*; do
-    ./lift $file timing.csv
+for file in ./test_systems/*/*/*/*; do
+    ./lift $file timing123.csv
+    echo $file
 done

@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
     }
 
     // open results file
-    FILE* resultsFile = fopen(argv[2], "ab+");
+    FILE* resultsFile = fopen(argv[2], "a+");
     if (resultsFile == NULL) {
         printf("Couldn't open stats file %s\n", strerror(errno));
         exit(1);

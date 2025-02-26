@@ -1,6 +1,0 @@
-4 variables
-4 constraints
-x2 - x1 >= 1
-x3 - x2 >= 1
--x1 - x4 >= -2
-x1 >= -3
